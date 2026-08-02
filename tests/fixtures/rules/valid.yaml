@@ -1,0 +1,5 @@
+schemaVersion: 1
+rules:
+  - id: yaml-rule
+    when:
+      ecosystem: python

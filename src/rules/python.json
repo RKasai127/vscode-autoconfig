@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "python-manifest-presence",
+      "description": "requirements.txt or pyproject.toml detected",
+      "when": {
+        "any": [
+          { "ecosystem": "python", "kind": "manifestPresence", "name": "requirements.txt" },
+          { "ecosystem": "python", "kind": "manifestPresence", "name": "pyproject.toml" }
+        ]
+      },
+      "extensions": ["ms-python.python", "ms-python.vscode-pylance"]
+    },
+    {
+      "id": "python-black-dependency",
+      "description": "black dependency detected",
+      "when": {
+        "any": [
+          { "ecosystem": "python", "kind": "dependency", "name": "black" },
+          { "ecosystem": "python", "kind": "devDependency", "name": "black" }
+        ]
+      },
+      "settings": {
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.formatOnSave": true
+        }
+      },
+      "extensions": ["ms-python.black-formatter"]
+    },
+    {
+      "id": "python-ruff-dependency",
+      "description": "ruff dependency detected",
+      "when": {
+        "any": [
+          { "ecosystem": "python", "kind": "dependency", "name": "ruff" },
+          { "ecosystem": "python", "kind": "devDependency", "name": "ruff" }
+        ]
+      },
+      "settings": {
+        "[python]": {
+          "editor.codeActionsOnSave": { "source.fixAll.ruff": true }
+        }
+      },
+      "extensions": ["charliermarsh.ruff"]
+    },
+    {
+      "id": "python-mypy-dependency",
+      "description": "mypy dependency detected",
+      "when": {
+        "any": [
+          { "ecosystem": "python", "kind": "dependency", "name": "mypy" },
+          { "ecosystem": "python", "kind": "devDependency", "name": "mypy" }
+        ]
+      },
+      "extensions": ["ms-python.mypy-type-checker"]
+    }
+  ]
+}
