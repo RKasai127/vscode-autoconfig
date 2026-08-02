@@ -1,0 +1,59 @@
+{
+  "name": "vscode-autoconfig",
+  "version": "0.1.0",
+  "description": "Analyze your project's manifests and auto-generate .vscode/settings.json and .vscode/extensions.json via rule-based detection (no AI/LLM).",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "vscode-autoconfig": "./dist/cli.js"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "diff": "^5.2.0",
+    "jsonc-parser": "^3.3.1",
+    "picocolors": "^1.0.1",
+    "smol-toml": "^1.3.0",
+    "yaml": "^2.5.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.7.0",
+    "@types/diff": "^5.2.1",
+    "@types/node": "^20.14.0",
+    "eslint": "^9.7.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.3",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^2.0.0"
+  }
+}
