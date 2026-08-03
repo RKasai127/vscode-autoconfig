@@ -1,0 +1,7 @@
+[project]
+name = "fixture-pep621"
+version = "0.1.0"
+dependencies = [
+  "requests>=2.31.0",
+  "black>=23.0",
+]

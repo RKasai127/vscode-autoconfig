@@ -68,12 +68,14 @@ describe('external rule loading', () => {
   it('does not throw for a reused id when useBuiltinRules is false', () => {
     const path = join(fixturesDir, 'duplicate-builtin-id.json');
 
-    const rules = loadRules({externalPath: path, useBuiltinRules: false})
-  
-    expect(rules).toEqual([{
-      "id": "node-eslint-config-presence",
-      "when": { "ecosystem": "node", "kind": "devDependency", "name": "eslint" },
-      "settings": { "eslint.enable": false }
-    }])
+    const rules = loadRules({ externalPath: path, useBuiltinRules: false });
+
+    expect(rules).toEqual([
+      {
+        id: 'node-eslint-config-presence',
+        when: { ecosystem: 'node', kind: 'devDependency', name: 'eslint' },
+        settings: { 'eslint.enable': false },
+      },
+    ]);
   });
 });

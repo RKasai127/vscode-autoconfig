@@ -1,0 +1,14 @@
+{
+  "name": "fixture-typescript-react",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "react": "^18.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "eslint": "^9.7.0"
+  }
+}
