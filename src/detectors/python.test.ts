@@ -50,6 +50,7 @@ describe('pythonDetector', () => {
 
   it('returns no findings for a directory with neither requirements.txt nor pyproject.toml', () => {
     const fixturesNodeDir = join(fixturesDir, '..', 'node-projects', 'minimal');
+    
     expect(pythonDetector.detect({ cwd: fixturesNodeDir })).toEqual([]);
   });
 
