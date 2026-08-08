@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "node-eslint-config-presence",
+      "when": { "ecosystem": "node", "kind": "devDependency", "name": "eslint" },
+      "settings": { "eslint.enable": false }
+    }
+  ]
+}

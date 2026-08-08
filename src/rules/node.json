@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "node-typescript-presence",
+      "description": "TypeScript project detected via tsconfig.json or a typescript devDependency",
+      "when": {
+        "any": [
+          { "ecosystem": "node", "kind": "configFilePresence", "name": "tsconfig.json" },
+          { "ecosystem": "node", "kind": "devDependency", "name": "typescript" }
+        ]
+      },
+      "settings": {
+        "js/ts.tsdk.path": "./node_modules/typescript/lib"
+      },
+      "extensions": ["dbaeumer.vscode-eslint"]
+    },
+    {
+      "id": "node-eslint-config-presence",
+      "description": "ESLint config file or eslint devDependency detected",
+      "when": {
+        "any": [
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".eslintrc" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".eslintrc.json" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".eslintrc.js" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".eslintrc.cjs" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".eslintrc.yml" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".eslintrc.yaml" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": "eslint.config.js" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": "eslint.config.mjs" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": "eslint.config.cjs" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": "eslint.config.ts" },
+          { "ecosystem": "node", "kind": "devDependency", "name": "eslint" }
+        ]
+      },
+      "settings": {
+        "eslint.enable": true,
+        "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" }
+      },
+      "extensions": ["dbaeumer.vscode-eslint"]
+    },
+    {
+      "id": "node-prettier-config-presence",
+      "description": "Prettier config file or prettier devDependency detected",
+      "when": {
+        "any": [
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".prettierrc" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".prettierrc.json" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".prettierrc.js" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".prettierrc.cjs" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".prettierrc.yml" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": ".prettierrc.yaml" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": "prettier.config.js" },
+          { "ecosystem": "node", "kind": "configFilePresence", "name": "prettier.config.cjs" },
+          { "ecosystem": "node", "kind": "devDependency", "name": "prettier" }
+        ]
+      },
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
+      "extensions": ["esbenp.prettier-vscode"]
+    },
+    {
+      "id": "node-react-dependency",
+      "description": "React dependency detected",
+      "when": { "ecosystem": "node", "kind": "dependency", "name": "react" },
+      "extensions": ["dsznajder.es7-react-js-snippets"]
+    },
+    {
+      "id": "node-vue-dependency",
+      "description": "Vue dependency detected",
+      "when": { "ecosystem": "node", "kind": "dependency", "name": "vue" },
+      "extensions": ["Vue.volar"]
+    },
+    {
+      "id": "node-next-dependency",
+      "description": "Next.js dependency detected",
+      "when": { "ecosystem": "node", "kind": "dependency", "name": "next" },
+      "extensions": ["dsznajder.es7-react-js-snippets"]
+    },
+    {
+      "id": "node-tailwind-dependency",
+      "description": "Tailwind CSS dependency detected",
+      "when": { "ecosystem": "node", "kind": "dependency", "name": "tailwindcss" },
+      "extensions": ["bradlc.vscode-tailwindcss"]
+    }
+  ]
+}
