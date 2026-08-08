@@ -56,7 +56,7 @@ describe('mergeExtensions', () => {
     const existing = '{\n  // do not remove\n  "recommendations": ["foo.bar"]\n}\n';
 
     const result = mergeExtensions(existing, ['baz.qux']);
-    
+
     expect(result.nextText).toContain('// do not remove');
     expect(parseJsonc(result.nextText).value).toEqual({ recommendations: ['foo.bar', 'baz.qux'] });
   });

@@ -112,7 +112,7 @@ describe('aggregate', () => {
     };
 
     aggregate([...rules, other]);
-    
+
     // the source rule literal must remain untouched by the merge performed above
     expect(pythonSettings).toEqual({ 'editor.defaultFormatter': 'ms-python.black-formatter' });
 

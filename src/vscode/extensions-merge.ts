@@ -45,7 +45,7 @@ export function mergeExtensions(
       skippedUnwanted.push(id);
       continue;
     }
-    
+
     const currentLength = readRecommendations(text).length;
     text = insertJsoncArrayItem(text, ['recommendations'], currentLength, id);
     seen.add(lower);

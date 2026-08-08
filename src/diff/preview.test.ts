@@ -72,7 +72,7 @@ describe('buildPreview', () => {
       settingsText: undefined,
       extensionsText: undefined,
     });
-    
+
     const settingsAfter = first.files.find((f) => f.label === 'settings.json')!.after;
     const extensionsAfter = first.files.find((f) => f.label === 'extensions.json')!.after;
 

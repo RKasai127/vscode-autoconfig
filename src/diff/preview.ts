@@ -86,7 +86,7 @@ export function buildPreview(params: BuildPreviewParams): PreviewResult {
   let extensionsUnwanted: string[] = [];
 
   const extensionsError = checkParseError(extensionsText);
-  
+
   if (extensionsError) {
     skippedFiles.push({
       file: extensionsPath,

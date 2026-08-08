@@ -81,7 +81,7 @@ export function mergeSettings(
 
   let text = baseText;
   const added: Record<string, JsonValue> = {};
-  
+
   for (const addition of additions) {
     text = setJsoncValue(text, addition.path, addition.value);
     added[addition.path.join('.')] = addition.value;

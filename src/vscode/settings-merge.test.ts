@@ -118,7 +118,7 @@ describe('mergeSettings', () => {
     const existing = '{\n  // keep this comment\n  "editor.tabSize": 4\n}\n';
 
     const result = mergeSettings(existing, { 'files.autoSave': 'onFocusChange' });
-    
+
     expect(result.nextText).toContain('// keep this comment');
     expect(parsedResult(result.nextText)).toEqual({
       'editor.tabSize': 4,

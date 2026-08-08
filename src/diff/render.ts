@@ -28,7 +28,7 @@ export function renderTerminal(json: CliJsonOutput, files: PreviewFile[]): strin
     if (file.before === file.after) continue;
 
     lines.push(pc.bold(`${file.path}${file.existed ? '' : ' (will be created)'}`));
-    
+
     for (const part of diffLines(file.before, file.after)) {
       if (part.removed) continue;
       const prefix = part.added ? '+' : ' ';

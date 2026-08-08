@@ -53,7 +53,7 @@ function mergeKey(
   }
 
   const existingConflict = conflicts.get(pathLabel);
-  
+
   if (existingConflict) {
     existingConflict.ignoredRuleIds.push(ruleId);
   } else {

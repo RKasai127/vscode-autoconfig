@@ -62,7 +62,7 @@ describe('dry-run / apply / idempotency flow', () => {
 
   it('--write creates .vscode/settings.json and extensions.json with the proposed changes', () => {
     const result = runCli({ write: true });
-    
+
     expect(result.exitCode).toBe(1);
 
     const settings = JSON.parse(
