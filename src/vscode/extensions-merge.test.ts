@@ -55,7 +55,11 @@ describe('mergeExtensions', () => {
     ]);
 
     expect(parseJsonc(result.nextText).value).toEqual({
-      recommendations: ['ms-python.python', 'ms-python.vscode-pylance', 'ms-python.black-formatter'],
+      recommendations: [
+        'ms-python.python',
+        'ms-python.vscode-pylance',
+        'ms-python.black-formatter',
+      ],
     });
   });
 

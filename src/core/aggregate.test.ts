@@ -26,7 +26,10 @@ describe('aggregate', () => {
       'eslint.enable': true,
     });
     expect(result.extensions).toEqual(['dbaeumer.vscode-eslint', 'ms-python.python']);
-    expect(result.matchedRuleIds).toEqual(['python-manifest-presence', 'node-eslint-config-presence']);
+    expect(result.matchedRuleIds).toEqual([
+      'python-manifest-presence',
+      'node-eslint-config-presence',
+    ]);
     expect(result.conflicts).toEqual([]);
   });
 
@@ -118,8 +121,16 @@ describe('aggregate', () => {
 
   it('merges two rules that both target the same ordinary object-valued key at one level', () => {
     const rules: Rule[] = [
-      { id: 'node-typescript-presence', when: {}, settings: { 'files.exclude': { '**/node_modules': true } } },
-      { id: 'python-manifest-presence', when: {}, settings: { 'files.exclude': { '**/__pycache__': true } } },
+      {
+        id: 'node-typescript-presence',
+        when: {},
+        settings: { 'files.exclude': { '**/node_modules': true } },
+      },
+      {
+        id: 'python-manifest-presence',
+        when: {},
+        settings: { 'files.exclude': { '**/__pycache__': true } },
+      },
     ];
 
     const result = aggregate(rules);
