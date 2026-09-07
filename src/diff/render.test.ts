@@ -9,9 +9,9 @@ const baseJson: CliJsonOutput = {
     ecosystems: ['node'],
     findings: [{ ecosystem: 'node', kind: 'dependency', name: 'react' }],
   },
-  matchedRules: ['react-rule'],
-  settings: { added: { 'a.b': 1 }, skipped: {} },
-  extensions: { added: ['foo.bar'], alreadyPresent: [], unwanted: [] },
+  matchedRules: ['node-react-dependency'],
+  settings: { added: { 'editor.defaultFormatter': 'esbenp.prettier-vscode' }, skipped: {} },
+  extensions: { added: ['dsznajder.es7-react-js-snippets'], alreadyPresent: [], unwanted: [] },
   conflicts: [],
   skippedFiles: [],
 };
@@ -22,7 +22,7 @@ const files: PreviewFile[] = [
     label: 'settings.json',
     existed: false,
     before: '',
-    after: '{\n  "a.b": 1\n}',
+    after: '{\n  "editor.defaultFormatter": "esbenp.prettier-vscode"\n}',
   },
 ];
 
@@ -49,11 +49,17 @@ describe('renderTerminal', () => {
   it('surfaces skipped files and conflicts', () => {
     const json: CliJsonOutput = {
       ...baseJson,
-      conflicts: [{ key: 'x.y', winningRuleId: 'first', ignoredRuleIds: ['second'] }],
+      conflicts: [
+        {
+          key: 'editor.defaultFormatter',
+          winningRuleId: 'python-black-dependency',
+          ignoredRuleIds: ['python-autopep8-dependency'],
+        },
+      ],
       skippedFiles: [{ file: '/proj/.vscode/settings.json', reason: 'syntax error', line: 3 }],
     };
     const output = renderTerminal(json, files);
-    expect(output).toContain('x.y');
+    expect(output).toContain('editor.defaultFormatter');
     expect(output).toContain('syntax error');
   });
 });
