@@ -1,6 +1,6 @@
 {
   "name": "vscode-autoconfig",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Analyze your project's manifests and auto-generate .vscode/settings.json and .vscode/extensions.json via rule-based detection (no AI/LLM).",
   "license": "MIT",
   "type": "module",
