@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
   "rules": [
-    { "id": "custom-rule", "when": { "ecosystem": "node" }, "extensions": ["foo.bar"] }
+    { "id": "custom-rule", "when": { "ecosystem": "node" }, "extensions": ["acme.custom-linter"] }
   ]
 }

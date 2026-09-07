@@ -11,7 +11,7 @@ const okDetector: Detector = {
 const failingDetector: Detector = {
   ecosystem: 'python',
   detect: () => {
-    throw new DetectorError('boom');
+    throw new DetectorError('Failed to parse pyproject.toml: unexpected end of input');
   },
 };
 
@@ -31,7 +31,9 @@ describe('collectFindings', () => {
     expect(result.findings).toEqual([
       { ecosystem: 'node', kind: 'manifestPresence', name: 'package.json' },
     ]);
-    expect(result.errors).toEqual(['[python] boom']);
+    expect(result.errors).toEqual([
+      '[python] Failed to parse pyproject.toml: unexpected end of input',
+    ]);
   });
 
   it('restricts detection to the requested ecosystems', () => {

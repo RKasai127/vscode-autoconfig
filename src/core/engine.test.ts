@@ -71,10 +71,13 @@ describe('evaluateRules', () => {
 
   it('preserves rule definition order in the result', () => {
     const rules: Rule[] = [
-      { id: 'a', when: { ecosystem: 'node' } },
-      { id: 'b', when: { ecosystem: 'node' } },
+      { id: 'node-eslint-config-presence', when: { ecosystem: 'node' } },
+      { id: 'node-prettier-config-presence', when: { ecosystem: 'node' } },
     ];
     const matched = evaluateRules([tsFinding], rules);
-    expect(matched.map((r) => r.id)).toEqual(['a', 'b']);
+    expect(matched.map((r) => r.id)).toEqual([
+      'node-eslint-config-presence',
+      'node-prettier-config-presence',
+    ]);
   });
 });

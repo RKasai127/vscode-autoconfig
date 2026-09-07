@@ -5,47 +5,83 @@ import type { Rule } from './types.js';
 describe('aggregate', () => {
   it('merges settings and extensions from all matched rules', () => {
     const rules: Rule[] = [
-      { id: 'a', when: {}, settings: { 'a.key': 1 }, extensions: ['foo.bar'] },
-      { id: 'b', when: {}, settings: { 'b.key': 2 }, extensions: ['baz.qux'] },
+      {
+        id: 'python-manifest-presence',
+        when: {},
+        settings: { 'python.defaultInterpreterPath': '${workspaceFolder}/.venv/bin/python' },
+        extensions: ['ms-python.python'],
+      },
+      {
+        id: 'node-eslint-config-presence',
+        when: {},
+        settings: { 'eslint.enable': true },
+        extensions: ['dbaeumer.vscode-eslint'],
+      },
     ];
 
     const result = aggregate(rules);
 
-    expect(result.settings).toEqual({ 'a.key': 1, 'b.key': 2 });
-    expect(result.extensions).toEqual(['baz.qux', 'foo.bar']);
-    expect(result.matchedRuleIds).toEqual(['a', 'b']);
+    expect(result.settings).toEqual({
+      'python.defaultInterpreterPath': '${workspaceFolder}/.venv/bin/python',
+      'eslint.enable': true,
+    });
+    expect(result.extensions).toEqual(['dbaeumer.vscode-eslint', 'ms-python.python']);
+    expect(result.matchedRuleIds).toEqual([
+      'python-manifest-presence',
+      'node-eslint-config-presence',
+    ]);
     expect(result.conflicts).toEqual([]);
   });
 
   it('dedupes extensions case-insensitively, keeping the first-seen casing', () => {
     const rules: Rule[] = [
-      { id: 'a', when: {}, extensions: ['Foo.Bar'] },
-      { id: 'b', when: {}, extensions: ['foo.bar'] },
+      { id: 'python-manifest-presence', when: {}, extensions: ['Ms-Python.Python'] },
+      { id: 'python-mypy-dependency', when: {}, extensions: ['ms-python.python'] },
     ];
 
     const result = aggregate(rules);
 
-    expect(result.extensions).toEqual(['Foo.Bar']);
+    expect(result.extensions).toEqual(['Ms-Python.Python']);
   });
 
   it('applies first-wins and records a conflict when rules disagree on a settings value', () => {
     const rules: Rule[] = [
-      { id: 'first', when: {}, settings: { 'x.y': 'alpha' } },
-      { id: 'second', when: {}, settings: { 'x.y': 'beta' } },
+      {
+        id: 'python-black-dependency',
+        when: {},
+        settings: { 'editor.defaultFormatter': 'ms-python.black-formatter' },
+      },
+      {
+        id: 'python-autopep8-dependency',
+        when: {},
+        settings: { 'editor.defaultFormatter': 'ms-python.autopep8' },
+      },
     ];
 
     const result = aggregate(rules);
 
-    expect(result.settings['x.y']).toBe('alpha');
+    expect(result.settings['editor.defaultFormatter']).toBe('ms-python.black-formatter');
     expect(result.conflicts).toEqual([
-      { key: 'x.y', winningRuleId: 'first', ignoredRuleIds: ['second'] },
+      {
+        key: 'editor.defaultFormatter',
+        winningRuleId: 'python-black-dependency',
+        ignoredRuleIds: ['python-autopep8-dependency'],
+      },
     ]);
   });
 
   it('does not record a conflict when rules agree on the same value', () => {
     const rules: Rule[] = [
-      { id: 'first', when: {}, settings: { 'x.y': 'alpha' } },
-      { id: 'second', when: {}, settings: { 'x.y': 'alpha' } },
+      {
+        id: 'python-black-dependency',
+        when: {},
+        settings: { 'editor.defaultFormatter': 'ms-python.black-formatter' },
+      },
+      {
+        id: 'python-manifest-presence',
+        when: {},
+        settings: { 'editor.defaultFormatter': 'ms-python.black-formatter' },
+      },
     ];
 
     const result = aggregate(rules);
@@ -55,39 +91,66 @@ describe('aggregate', () => {
 
   it('accumulates multiple ignored rule ids for the same conflicting key', () => {
     const rules: Rule[] = [
-      { id: 'first', when: {}, settings: { 'x.y': 'alpha' } },
-      { id: 'second', when: {}, settings: { 'x.y': 'beta' } },
-      { id: 'third', when: {}, settings: { 'x.y': 'gamma' } },
+      {
+        id: 'node-prettier-config-presence',
+        when: {},
+        settings: { 'editor.defaultFormatter': 'esbenp.prettier-vscode' },
+      },
+      {
+        id: 'node-biome-config-presence',
+        when: {},
+        settings: { 'editor.defaultFormatter': 'biomejs.biome' },
+      },
+      {
+        id: 'node-eslint-config-presence',
+        when: {},
+        settings: { 'editor.defaultFormatter': 'dbaeumer.vscode-eslint' },
+      },
     ];
 
     const result = aggregate(rules);
 
     expect(result.conflicts).toEqual([
-      { key: 'x.y', winningRuleId: 'first', ignoredRuleIds: ['second', 'third'] },
+      {
+        key: 'editor.defaultFormatter',
+        winningRuleId: 'node-prettier-config-presence',
+        ignoredRuleIds: ['node-biome-config-presence', 'node-eslint-config-presence'],
+      },
     ]);
   });
 
   it('merges two rules that both target the same ordinary object-valued key at one level', () => {
     const rules: Rule[] = [
-      { id: 'first', when: {}, settings: { 'files.exclude': { '**/.git': true } } },
-      { id: 'second', when: {}, settings: { 'files.exclude': { '**/node_modules': true } } },
+      {
+        id: 'node-typescript-presence',
+        when: {},
+        settings: { 'files.exclude': { '**/node_modules': true } },
+      },
+      {
+        id: 'python-manifest-presence',
+        when: {},
+        settings: { 'files.exclude': { '**/__pycache__': true } },
+      },
     ];
 
     const result = aggregate(rules);
 
-    expect(result.settings['files.exclude']).toEqual({ '**/.git': true, '**/node_modules': true });
+    expect(result.settings['files.exclude']).toEqual({
+      '**/node_modules': true,
+      '**/__pycache__': true,
+    });
     expect(result.conflicts).toEqual([]);
   });
 
   it('merges two rules that both target the same language-override key two levels deep', () => {
     const rules: Rule[] = [
       {
-        id: 'black',
+        id: 'python-black-dependency',
         when: {},
         settings: { '[python]': { 'editor.defaultFormatter': 'ms-python.black-formatter' } },
       },
       {
-        id: 'ruff',
+        id: 'python-ruff-dependency',
         when: {},
         settings: { '[python]': { 'editor.codeActionsOnSave': { 'source.fixAll.ruff': true } } },
       },
@@ -104,9 +167,11 @@ describe('aggregate', () => {
 
   it('does not mutate the original rule.settings object literals across repeated aggregation', () => {
     const pythonSettings = { 'editor.defaultFormatter': 'ms-python.black-formatter' };
-    const rules: Rule[] = [{ id: 'black', when: {}, settings: { '[python]': pythonSettings } }];
+    const rules: Rule[] = [
+      { id: 'python-black-dependency', when: {}, settings: { '[python]': pythonSettings } },
+    ];
     const other: Rule = {
-      id: 'ruff',
+      id: 'python-ruff-dependency',
       when: {},
       settings: { '[python]': { 'editor.codeActionsOnSave': { 'source.fixAll.ruff': true } } },
     };

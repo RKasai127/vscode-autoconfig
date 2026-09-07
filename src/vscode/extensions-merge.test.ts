@@ -13,51 +13,64 @@ describe('mergeExtensions', () => {
   });
 
   it('unions new ids with existing ones, preserving existing order and appending new ones at the end', () => {
-    const existing = '{\n  "recommendations": ["foo.bar"]\n}\n';
+    const existing = '{\n  "recommendations": ["esbenp.prettier-vscode"]\n}\n';
 
-    const result = mergeExtensions(existing, ['baz.qux']);
+    const result = mergeExtensions(existing, ['ms-python.python']);
 
-    expect(parseJsonc(result.nextText).value).toEqual({ recommendations: ['foo.bar', 'baz.qux'] });
-    expect(result.added).toEqual(['baz.qux']);
+    expect(parseJsonc(result.nextText).value).toEqual({
+      recommendations: ['esbenp.prettier-vscode', 'ms-python.python'],
+    });
+    expect(result.added).toEqual(['ms-python.python']);
   });
 
   it('treats extension ids as case-insensitive when checking for duplicates', () => {
-    const existing = '{\n  "recommendations": ["Foo.Bar"]\n}\n';
+    const existing = '{\n  "recommendations": ["Ms-Python.Python"]\n}\n';
 
-    const result = mergeExtensions(existing, ['foo.bar']);
+    const result = mergeExtensions(existing, ['ms-python.python']);
 
-    expect(parseJsonc(result.nextText).value).toEqual({ recommendations: ['Foo.Bar'] });
+    expect(parseJsonc(result.nextText).value).toEqual({ recommendations: ['Ms-Python.Python'] });
     expect(result.added).toEqual([]);
-    expect(result.alreadyPresent).toEqual(['foo.bar']);
+    expect(result.alreadyPresent).toEqual(['ms-python.python']);
   });
 
   it('never re-adds an id listed in unwantedRecommendations', () => {
-    const existing = '{\n  "recommendations": [],\n  "unwantedRecommendations": ["foo.bar"]\n}\n';
+    const existing =
+      '{\n  "recommendations": [],\n  "unwantedRecommendations": ["ms-python.autopep8"]\n}\n';
 
-    const result = mergeExtensions(existing, ['foo.bar']);
+    const result = mergeExtensions(existing, ['ms-python.autopep8']);
 
     expect(parseJsonc(result.nextText).value).toEqual({
       recommendations: [],
-      unwantedRecommendations: ['foo.bar'],
+      unwantedRecommendations: ['ms-python.autopep8'],
     });
     expect(result.added).toEqual([]);
-    expect(result.skippedUnwanted).toEqual(['foo.bar']);
+    expect(result.skippedUnwanted).toEqual(['ms-python.autopep8']);
   });
 
   it('adds multiple new ids in the order given', () => {
-    const result = mergeExtensions(undefined, ['a.one', 'b.two', 'c.three']);
+    const result = mergeExtensions(undefined, [
+      'ms-python.python',
+      'ms-python.vscode-pylance',
+      'ms-python.black-formatter',
+    ]);
 
     expect(parseJsonc(result.nextText).value).toEqual({
-      recommendations: ['a.one', 'b.two', 'c.three'],
+      recommendations: [
+        'ms-python.python',
+        'ms-python.vscode-pylance',
+        'ms-python.black-formatter',
+      ],
     });
   });
 
   it('preserves existing comments in extensions.json', () => {
-    const existing = '{\n  // do not remove\n  "recommendations": ["foo.bar"]\n}\n';
+    const existing = '{\n  // do not remove\n  "recommendations": ["esbenp.prettier-vscode"]\n}\n';
 
-    const result = mergeExtensions(existing, ['baz.qux']);
+    const result = mergeExtensions(existing, ['dbaeumer.vscode-eslint']);
 
     expect(result.nextText).toContain('// do not remove');
-    expect(parseJsonc(result.nextText).value).toEqual({ recommendations: ['foo.bar', 'baz.qux'] });
+    expect(parseJsonc(result.nextText).value).toEqual({
+      recommendations: ['esbenp.prettier-vscode', 'dbaeumer.vscode-eslint'],
+    });
   });
 });

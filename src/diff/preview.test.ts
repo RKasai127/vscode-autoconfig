@@ -12,16 +12,16 @@ const emptyAggregated: AggregatedResult = {
 describe('buildPreview', () => {
   it('produces additions for both files when neither exists yet', () => {
     const aggregated: AggregatedResult = {
-      matchedRuleIds: ['r1'],
-      settings: { 'a.b': 1 },
-      extensions: ['foo.bar'],
+      matchedRuleIds: ['python-manifest-presence'],
+      settings: { 'python.defaultInterpreterPath': '${workspaceFolder}/.venv/bin/python' },
+      extensions: ['ms-python.python'],
       conflicts: [],
     };
 
     const result = buildPreview({
       mode: 'dry-run',
       findings: [],
-      ecosystems: ['node'],
+      ecosystems: ['python'],
       aggregated,
       settingsPath: '/proj/.vscode/settings.json',
       extensionsPath: '/proj/.vscode/extensions.json',
@@ -29,8 +29,10 @@ describe('buildPreview', () => {
       extensionsText: undefined,
     });
 
-    expect(result.json.settings.added).toEqual({ 'a.b': 1 });
-    expect(result.json.extensions.added).toEqual(['foo.bar']);
+    expect(result.json.settings.added).toEqual({
+      'python.defaultInterpreterPath': '${workspaceFolder}/.venv/bin/python',
+    });
+    expect(result.json.extensions.added).toEqual(['ms-python.python']);
     expect(result.json.skippedFiles).toEqual([]);
     expect(result.files).toHaveLength(2);
     expect(result.files.every((f) => !f.existed)).toBe(true);
@@ -56,9 +58,9 @@ describe('buildPreview', () => {
 
   it('produces no additions and an empty diff on a second identical run (idempotency source)', () => {
     const aggregated: AggregatedResult = {
-      matchedRuleIds: ['r1'],
-      settings: { 'a.b': 1 },
-      extensions: ['foo.bar'],
+      matchedRuleIds: ['python-manifest-presence'],
+      settings: { 'python.defaultInterpreterPath': '${workspaceFolder}/.venv/bin/python' },
+      extensions: ['ms-python.python'],
       conflicts: [],
     };
 

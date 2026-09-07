@@ -22,7 +22,7 @@ beforeEach(() => {
       schemaVersion: 1,
       rules: [
         {
-          id: 'ts-rule',
+          id: 'node-typescript-presence',
           when: { ecosystem: 'node', kind: 'devDependency', name: 'typescript' },
           settings: { 'typescript.tsdk': 'node_modules/typescript/lib' },
           extensions: ['dbaeumer.vscode-eslint'],

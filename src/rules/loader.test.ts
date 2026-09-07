@@ -15,7 +15,7 @@ describe('loadBuiltinRules', () => {
     const builtinRules = loadBuiltinRules();
 
     expect(Array.isArray(builtinRules)).toBe(true);
-    expect(builtinRules.length).toBe(11); // Seven Node rules and four Python rules.
+    expect(builtinRules.length).toBe(12); // Seven Node rules and five Python rules.
   });
 });
 
@@ -24,7 +24,7 @@ describe('external rule loading', () => {
     const rules = loadExternalRules(join(fixturesDir, 'valid.json'));
 
     expect(rules).toEqual([
-      { id: 'custom-rule', when: { ecosystem: 'node' }, extensions: ['foo.bar'] },
+      { id: 'custom-rule', when: { ecosystem: 'node' }, extensions: ['acme.custom-linter'] },
     ]);
   });
 
@@ -54,7 +54,7 @@ describe('external rule loading', () => {
     const merged = loadRules({ externalPath: path, useBuiltinRules: false });
 
     expect(merged).toEqual([
-      { id: 'custom-rule', when: { ecosystem: 'node' }, extensions: ['foo.bar'] },
+      { id: 'custom-rule', when: { ecosystem: 'node' }, extensions: ['acme.custom-linter'] },
     ]);
   });
 
